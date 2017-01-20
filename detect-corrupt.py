@@ -1,3 +1,6 @@
+# todo:
+# add option to run quicker and lighter tests (without doing the longest tests)
+
 # I wonder if there is a way to more accurately determine an image file integrity.
 # A deep scan to detect signs of corruption in the binary data of the image file
 # or something like that.
