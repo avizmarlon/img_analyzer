@@ -14,8 +14,8 @@ from tkinter.filedialog import askdirectory
 
 # using tkinter's fancy gui to get user input
 mainWindow = Tk().withdraw()
-rec_dir = askdirectory(title="Choose the dir to be analyzed")+"/"
-unrec_dir = askdirectory(title="Choose the dir to place unrecoverable files")+"/"
+rec_dir = askdirectory(title="Choose the dir to be analyzed") + "/"
+unrec_dir = askdirectory(title="Choose the dir to place unrecoverable files") + "/"
 
 dir_tree = os.walk(rec_dir)
 for dirpath, dirname, filename in dir_tree:
