@@ -1,6 +1,6 @@
 # to-do:
 # - add option to run quicker and lighter tests (without doing the longest tests);
-# - add option to further investigate semi-corrupted images;
+# - add option to further investigate files that fail on the first test;
 
 # I wonder if there is a way to more accurately determine an image file integrity.
 # A deep scan to detect signs of corruption in the binary data of the image file
@@ -17,7 +17,7 @@ from tkinter.filedialog import askdirectory
 mainWindow = Tk().withdraw()
 rec_dir = askdirectory(title="Choose the dir to be analyzed") + "/"
 unrec_dir = askdirectory(title="Choose the dir to place unrecoverable files") + "/"
-semi_rec = askdirectory(title="Choose the dir to place semi-corrupted files") + "/"
+to_further_investigate_dir = askdirectory(title="Choose the dir to place semi-corrupted files") + "/"
 
 dir_tree = os.walk(rec_dir)
 for dirpath, dirname, filename in dir_tree:
@@ -26,14 +26,16 @@ for dirpath, dirname, filename in dir_tree:
         current_img = rec_dir+file  # path + file name
 
         # TEST - open()
-        # I just "continue" because even some seemingly working images raise an error when I "open()" them
+        # On the first test, both working and non-working images can fail, so
+        # either way, they're both going into a "to-further-investigate" folder.
         try:
             current_img_object = Image.open(current_img)
             print("File", file, "was successfully objectified")
         except OSError:
             print("The file", file, "could NOT be objectified, but may still work normally. "
             						"We gonna place it in a separate folder and continue.")
-            shutil.move(current_img, semi_rec)
+            current_img_object.close()
+            shutil.move(current_img, to_further_investigate_dir)
             print("The file was successfuly moved.")
             continue
 
