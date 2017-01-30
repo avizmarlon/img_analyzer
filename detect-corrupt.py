@@ -1,5 +1,6 @@
-# todo:
-# add option to run quicker and lighter tests (without doing the longest tests)
+# to-do:
+# - add option to run quicker and lighter tests (without doing the longest tests);
+# - add option to further investigate semi-corrupted images;
 
 # I wonder if there is a way to more accurately determine an image file integrity.
 # A deep scan to detect signs of corruption in the binary data of the image file
@@ -16,6 +17,7 @@ from tkinter.filedialog import askdirectory
 mainWindow = Tk().withdraw()
 rec_dir = askdirectory(title="Choose the dir to be analyzed") + "/"
 unrec_dir = askdirectory(title="Choose the dir to place unrecoverable files") + "/"
+semi_rec = askdirectory(title="Choose the dir to place semi-corrupted files") + "/"
 
 dir_tree = os.walk(rec_dir)
 for dirpath, dirname, filename in dir_tree:
@@ -29,8 +31,11 @@ for dirpath, dirname, filename in dir_tree:
             current_img_object = Image.open(current_img)
             print("File", file, "was successfully objectified")
         except OSError:
-            print("The file", file, "could NOT be objectified, but may still work normally. Les try "
-                                    "using the show() attribute on it")
+            print("The file", file, "could NOT be objectified, but may still work normally. "
+            						"We gonna place it in a separate folder and continue.")
+            shutil.move(current_img, semi_rec)
+            print("The file was successfuly moved.")
+            continue
 
         # TEST - verify()
         try:
